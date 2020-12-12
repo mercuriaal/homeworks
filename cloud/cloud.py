@@ -12,16 +12,14 @@ def save_photos(social_media_id, cloud_token):
     offset = 0
     likes_list = []
     list_for_json = []
-    create_folder = requests.put("https://cloud-api.yandex.net/v1/disk/resources", headers=headers,
-                                 params={"path": "VK_Photos"})
-    create_folder.raise_for_status()
+    requests.put("https://cloud-api.yandex.net/v1/disk/resources", headers=headers, params={"path": "VK_Photos"})
     while True:
-        response = requests.get("https://api.vk.com/method/" + "photos.get",
-                                params={"owner_id": social_media_id, "extended": "1000", "album_id": "profile",
-                                        "count": "1000", "offset": offset, "access_token": vk_token, "v": "5.126"})
+        response = requests.get("https://api.vk.com/method/" + "photos.getAll",
+                                params={"owner_id": social_media_id, "extended": "1",
+                                        "count": "200", "offset": offset, "access_token": vk_token, "v": "5.126"})
         response.raise_for_status()
         time.sleep(0.5)
-        offset += 1000
+        offset += 200
         if len(response.json()["response"]["items"]) == 0:
             break
         photos_info = response.json()["response"]["items"]
@@ -36,7 +34,6 @@ def save_photos(social_media_id, cloud_token):
             photo_upload = requests.post("https://cloud-api.yandex.net/v1/disk/resources/upload", headers=headers,
                                          params={"url": photo_url, "path": "disk:/VK_Photos/" + file_name})
             photo_upload.raise_for_status()
-            time.sleep(0.5)
             size = photo["sizes"][-1]["type"]
             photo_info_dict = dict(file_name=file_name, size=size)
             list_for_json.append(photo_info_dict)
