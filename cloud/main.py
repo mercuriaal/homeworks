@@ -1,8 +1,8 @@
-import requests
 import time
 import json
-from tqdm import tqdm
 import os
+from tqdm import tqdm
+import requests
 
 
 class AccountVK:
@@ -55,25 +55,27 @@ class AccountYaDisk:
     def __init__(self, cloud_token):
         self.cloud_token = cloud_token
 
-    def upload_photos(self):
+    def upload_photos(self, photos_lim: int):
         headers = {"Authorization": self.cloud_token}
+        photos_count = 0
         requests.put("https://cloud-api.yandex.net/v1/disk/resources",
                      headers=headers, params={"path": "Uploaded_Photos"})
         photos_list = os.listdir("Downloaded_Photos")
-        for photo in tqdm(photos_list):
+        for photo in tqdm(photos_list[0:photos_lim]):
             response = requests.get("https://cloud-api.yandex.net/v1/disk/resources/upload",
-                                    params={"path": "/Uploaded_Photos/" + photo, "overwrite": "true"}, headers=headers)
+                                    params={"path": "/Uploaded_Photos/" + photo, "overwrite": "true"},
+                                    headers=headers)
             data = response.json()
             href = data["href"]
             with open("Downloaded_Photos/" + photo, "rb") as f:
                 upload = requests.put(href, files={"file": f})
                 upload.raise_for_status()
+                photos_count += 1
         return
 
 
-def copy_from_vk_to_yadisk(vk_id, yadisk_token):
-    vk = AccountVK(vk_id)
-    yadisk = AccountYaDisk(yadisk_token)
+if __name__ == '__main__':
+    vk = AccountVK()
+    yadisk = AccountYaDisk()
     vk.download_photos()
-    yadisk.upload_photos()
-    return
+    yadisk.upload_photos(5)
