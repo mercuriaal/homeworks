@@ -29,11 +29,11 @@ class AccountVK:
             photos_info = overall_response.json()["response"]["items"]
             for photo in tqdm(photos_info):
                 likes = photo["likes"]["count"]
-                list_of_likes.append(likes)
-                if list_of_likes.count(likes) > 1:
+                if likes in list_of_likes:
                     file_name = str(likes) + "-" + str(photo["date"]) + ".jpg"
                 else:
                     file_name = str(likes) + ".jpg"
+                list_of_likes.append(likes)
 
                 size = photo["sizes"][-1]["type"]
                 photo_info_dict = dict(file_name=file_name, size=size)
@@ -75,7 +75,7 @@ class AccountYaDisk:
 
 
 if __name__ == '__main__':
-    vk = AccountVK()
+    vk = AccountVK(552934290)
     yadisk = AccountYaDisk()
     vk.download_photos()
     yadisk.upload_photos(5)
