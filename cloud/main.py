@@ -75,7 +75,10 @@ class AccountYaDisk:
 
 
 if __name__ == '__main__':
-    vk = AccountVK(552934290)
-    yadisk = AccountYaDisk()
+    vk_id = int(input("Введите id пользователя VK"))
+    yad_token = input("Введите токен Яндекс Диска")
+    photo_quantity = int(input("Сколько фотографий загрузить на Яндекс Диск?"))
+    vk = AccountVK(vk_id)
+    yadisk = AccountYaDisk(yad_token)
     vk.download_photos()
-    yadisk.upload_photos(5)
+    yadisk.upload_photos(photo_quantity)
