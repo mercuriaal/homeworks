@@ -1,2 +1,2 @@
 def get_employees():
-    print('Подбираем кадры')
+    print('Подбираем кадры...')
