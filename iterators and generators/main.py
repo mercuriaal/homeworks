@@ -1,5 +1,6 @@
 import requests
 import hashlib
+from decorator import logger
 
 
 class Iterator:
@@ -18,6 +19,7 @@ class Iterator:
             raise StopIteration
         return self.data[0 + self.count]
 
+    @logger('logs.txt')
     def direct_to_wiki(self, file_name):
         for country in self:
             name = country['name']['common']
