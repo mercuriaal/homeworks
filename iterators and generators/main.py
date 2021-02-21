@@ -33,6 +33,7 @@ class Iterator:
                     f.write(name + ' ' + '-' + ' ' + 'https://en.wikipedia.org/wiki/' + name + '\n')
 
 
+@logger('logs.txt')
 def hashing(file_name):
     with open(file_name, 'rb') as f:
         text = f.readlines()
