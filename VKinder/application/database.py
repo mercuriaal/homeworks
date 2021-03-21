@@ -1,5 +1,5 @@
 import sqlalchemy as sql
-from sqlalchemy import Integer, ForeignKey, Column, Table
+from sqlalchemy import Integer, String, Boolean, ForeignKey, Column, Table
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -33,6 +33,10 @@ class Results(Base):
 
     id = Column(Integer, primary_key=True)
     result_vk_id = Column(Integer)
+    url = Column(String(30))
+    photo_id = Column(Integer)
+    favorite = Column(Boolean)
+    black_list = Column(Boolean)
 
     users = relationship(AppUser, secondary=userresult, back_populates='results')
 
