@@ -9,8 +9,3 @@ app.config.from_mapping(SQLALCHEMY_DATABASE_URI=config.POSTGRE_URI)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-
-@app.route('/')
-def hello_world():
-    return f'Hello World! {config.POSTGRE_URI}'
