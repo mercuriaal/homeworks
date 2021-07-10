@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  flask:
+    image: flask-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - 5000:5000
+    environment:
+      DATABASE: postgresql://user_db:user_password@postgres/db_api
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_USER: user_db
+      POSTGRES_PASSWORD: user_password
+      POSTGRES_DB: db_api
