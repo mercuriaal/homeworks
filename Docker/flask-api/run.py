@@ -1,3 +1,5 @@
+import os
+
 from app import app
 from views import AdvertisementView
 
@@ -7,4 +9,8 @@ app.add_url_rule('/advertisements/<int:ad_id>', view_func=AdvertisementView.as_v
                  methods=['GET', 'PATCH', 'DELETE'])
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=int(os.getenv('PORT', default=5000))
+    )
